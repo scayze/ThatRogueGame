@@ -1,0 +1,12 @@
+(Ordenados de menor a mayor dificultad)
+
+slime_1.png = Slime verde idle
+skeleton.png = Esqueleto idle
+snake_1.png = Serpiente verde idle
+slime_2.png = Slime rojo idle
+snake_2.png = Serpiente roja idle
+zombie.png = Zombi idle
+golem_1.png = Golem amarillo idle
+golem_2.png = Golem verde idle
+golem_2.png = Golem piedra idle
+cube.png = Cubo

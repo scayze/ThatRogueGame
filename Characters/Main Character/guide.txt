@@ -1,0 +1,3 @@
+character_cooper.png : Animación idle de personaje con espada de cobre.
+character_gold.png : Animación idle de personaje con espada de oro.
+character_iron.png : Animación idle de personaje con espada de hierro.

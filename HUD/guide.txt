@@ -1,0 +1,11 @@
+Barra de salud, la primera es la suma de los dos sprites de abajo (el fondo y la barra roja.)
+
+Slot de item.
+Slot de item seleccionado
+
+"Slot" pequeño, separado para hacer los botones y fichas de objeto.
+
+Botón de Play para el menú principal (O para volver a jugar en el menú de game over)
+Botón de Highscores para el menú principal.
+Botón de Credits para el menú principal.
+Botón de Exit, en el menú principal sale del juego, en el menú de game over, vuelve al menú principal. 

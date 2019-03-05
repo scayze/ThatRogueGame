@@ -1,0 +1,16 @@
+De izquierda a derecha:
+
+Espada de oro, la mejor espada del juego.
+Espada de hierro, la segunda mejor espada del juego.
+Espada de cobre, la peor espada del juego (con la que empieza el personaje.)
+
+Poema: Se da al menos uno por nivel en los cofres, al activarlos, se pausa el juego, se tiñe de negro el fondo y se muestra un poema (uno distinto por nivel) , el fondo donde se muestra el poema es el mismo que el de la ficha de los objetos.
+
+Cereza: Recupera x puntos de vida.
+
+Puntos: Da x puntos al jugador.
+
+Poción de energía: Rellena la energía del jugador.
+Poción de salud: Rellena la salud del jugador.
+
+Manzana: Recupera x puntos de energía.

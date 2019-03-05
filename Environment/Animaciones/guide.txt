@@ -1,0 +1,7 @@
+arbol_attack.png = Cuando el jugador se mueva hacia una casilla con un arbol, lo va a atacar, se va a ejecutar esta animación cada vez, hasta que el jugador rompa el árbol.
+arbol_idle.png = Esta animación es la animación de idle del árbol.
+
+arbusto_attack.png = Cuando el jugador se mueva hacia una casilla con un arbusto, lo va a atacar, se va a ejecutar esta animación cada vez hasta que el jugador rompa el arbusto.
+arbusto_idle.png = Animación de idle del arbusto
+
+cofre_attack.png = Animación que se ejecuta cuando el jugador abre un cofre.

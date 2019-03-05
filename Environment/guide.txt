@@ -1,0 +1,15 @@
+De izquierda a derecha:
+
+Cruz blanca, señala la posición de nuestro personaje.
+Cruz roja, señala la posición de los enemigos.
+Cruz azul, señala el fin del nivel (activada)
+Cruz azul semi-transparente, señala el final del nivel, se transforma (activa) cuando se matan a todos los enemigos, en caso de que haya enemigos, se mantiene en este estado y no se puede avanzar de nivel.
+
+Abajo de las cruces: Distintas decoraciones para agregar variedad al pasto.
+
+Escalera de izquierda/derecha, las 3 tablas azules, debajo, son para hacer la sombra del puente sobre el agua.
+La soga de arriba está separada del tile de abajo, así se separa por capas el el personaje pasa entre medio de las dos.
+
+Cofre.
+Arbusto (Drop de cerezas)
+Árbol (Drop de manzanas.)

@@ -1,0 +1,1 @@
+arbol_attack_01.png.png 6 6, arbol_attack_02.png.png 61 6, arbol_attack_03.png.png 118 6, arbol_attack_04.png.png 178 6.
