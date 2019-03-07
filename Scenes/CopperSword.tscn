@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Props/CopperSword.png" type="Texture" id=1]
+[ext_resource path="res://Scenes/CopperSword.gd" type="Script" id=2]
+
+[node name="CopperSword" type="Sprite"]
+texture = ExtResource( 1 )
+script = ExtResource( 2 )
+is_weapon = true
+damage = 5
+

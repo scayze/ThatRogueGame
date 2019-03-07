@@ -8,11 +8,11 @@ var spots = []
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	inv1.set_selected(true)
 	spots.append(inv1)
 	spots.append(inv2)
 	spots.append(inv3)
 	spots.append(inv4)
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
+func set_weapon(w):
+	inv1.set_item(w)

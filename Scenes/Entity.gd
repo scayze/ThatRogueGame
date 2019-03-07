@@ -66,6 +66,12 @@ func id_to_pos(i):
 func attack(entity):
 	if has_method("on_attack"): call("on_attack",entity)
 
+func heal(a):
+	if has_method("on_heal"): call("on_heal",a)
+	hp += a
+	hp = clamp(hp,0,max_hp)
+	healthbar.set_health(float(hp)/max_hp)
+
 func deal_damage(d):
 	if has_method("on_damage"): call("on_damage",d)
 	if is_attackable:

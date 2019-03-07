@@ -10,11 +10,17 @@ config_version=4
 
 _global_script_classes=[ {
 "base": "Sprite",
+"class": "Drop",
+"language": "GDScript",
+"path": "res://Drop.gd"
+}, {
+"base": "Sprite",
 "class": "Entity",
 "language": "GDScript",
 "path": "res://Scenes/Entity.gd"
 } ]
 _global_script_class_icons={
+"Drop": "",
 "Entity": ""
 }
 
@@ -45,6 +51,11 @@ Down={
 Up={
 "deadzone": 0.5,
 "events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":16777232,"unicode":0,"echo":false,"script":null)
+ ]
+}
+Collect={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":69,"unicode":0,"echo":false,"script":null)
  ]
 }
 

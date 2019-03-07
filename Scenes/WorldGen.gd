@@ -105,7 +105,7 @@ func spawn_fucks():
 func choose_island_spawns():
 	var island_spawns = []
 	var island_bridge = []
-	debug_print()
+	#debug_print()
 	for x in range(1,w-1):
 		for y in range(1,h-1):
 			if typeof(map[x][y]) != TYPE_INT: continue
@@ -140,7 +140,6 @@ func choose_island_spawns():
 					island_spawns.append(rect)
 					island_bridge.append(line)
 	
-	print(island_spawns.size())
 	var r = rand_range(0,island_spawns.size())
 	return [island_spawns[r],island_bridge[r]]
 

@@ -14,7 +14,7 @@ func on_health_empty():
 
 func on_attack(e):
 	if e.type == Type.PLAYER:
-		e.deal_damage(1)
+		e.deal_damage(4)
 
 func on_turn():
 	if can_move == false:

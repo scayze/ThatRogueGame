@@ -12,10 +12,10 @@ const map_height = 26
 onready var astar
 var map = []
 var entities = []
+var drops = []
 
-#class spawn_position:
-#	var pos = Vector2
-#	var 
+onready var ui = get_node("Viewport/UI")
+
 
 func _ready():
 	start_game()
@@ -39,6 +39,10 @@ func init_map():
 	
 	tilemap.clear()
 	flora.clear()
+	drops.clear()
+	for x in range(0,map_width):
+		drops.append([])
+		drops[x].resize(map_height)
 	worldgen.reset()
 	
 	worldgen.add_island(Vector2(6,3),15,0.1)
@@ -65,6 +69,15 @@ func init_map():
 	player.init(astar,player,self)
 	player.update()
 
+func spawn_drop(drop,pos):
+	if drops[pos.x][pos.y]:
+		print("Trying to spawn an drop on an existing one")
+		drop.queue_free()
+		return
+	drop.pos = pos
+	drops[pos.x][pos.y] = drop
+	drop.init(self,player)
+
 func spawn_entity(entity, pos):
 	if map[pos.x][pos.y]:
 		print("Trying to spawn an entity on an existing one")
@@ -77,21 +90,6 @@ func spawn_entity(entity, pos):
 		astar.set_point_weight_scale(entity.id,100)#disconnect_nav(entity.id)
 	entity.init(astar,player,self)
 	entity.update()
-
-func disconnect_nav(id):
-	var cons = astar.get_point_connections(id)
-	print(cons.size())
-	for c in cons:
-		astar.disconnect_points(id,c)
-
-func reconnect_nav(id):
-	if astar.has_point(id-1): astar.connect_points(id,id-1)
-	if astar.has_point(id+1): astar.connect_points(id,id+1)
-	if astar.has_point(id-map_width): astar.connect_points(id,id-map_width)
-	if astar.has_point(id+map_width): astar.connect_points(id,id+map_width)
-
-func get_closest_point(id):
-	pass # todo Implement
 
 func move_entity(entity, dir):
 	if entity.is_blocking: 
@@ -125,3 +123,18 @@ func start_game():
 func enemy_turn():
 	for e in entities:
 		e.take_turn()
+
+func disconnect_nav(id):
+	var cons = astar.get_point_connections(id)
+	print(cons.size())
+	for c in cons:
+		astar.disconnect_points(id,c)
+
+func reconnect_nav(id):
+	if astar.has_point(id-1): astar.connect_points(id,id-1)
+	if astar.has_point(id+1): astar.connect_points(id,id+1)
+	if astar.has_point(id-map_width): astar.connect_points(id,id-map_width)
+	if astar.has_point(id+map_width): astar.connect_points(id,id+map_width)
+
+func get_closest_point(id):
+	pass # todo Implement
