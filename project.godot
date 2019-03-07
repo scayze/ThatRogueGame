@@ -12,7 +12,7 @@ _global_script_classes=[ {
 "base": "Sprite",
 "class": "Entity",
 "language": "GDScript",
-"path": "res://Entity.gd"
+"path": "res://Scenes/Entity.gd"
 } ]
 _global_script_class_icons={
 "Entity": ""

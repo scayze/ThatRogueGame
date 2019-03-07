@@ -13,14 +13,19 @@ func _enter_tree():
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	anim.play("Idle")
-	pass
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
+func on_init():
+	healthbar.visible = true
+
+func on_attack(e):
+	e.deal_damage(1)
+
+func on_damage(d):
 	pass
 
 func move(vec):
-	get_parent().move_entity(self,vec)
+	main.move_entity(self,vec)
+	main.enemy_turn()
 	pass
 
 func _input(event):
@@ -34,3 +39,11 @@ func _input(event):
 		move(Vector2(0,-1))
 	elif event.is_action_pressed("Down"):
 		move(Vector2(0,1))
+	elif event is InputEventKey:
+		if event.scancode == KEY_Q:
+			$Camera2D.zoom = Vector2(1,1)
+		elif event.scancode == KEY_E:
+			$Camera2D.zoom = Vector2(0.35,0.35)
+		elif event.scancode == KEY_R:
+			main.start_game()
+

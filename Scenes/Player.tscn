@@ -22,10 +22,13 @@ tracks/0/keys = {
 
 [node name="Player" type="Sprite"]
 texture = ExtResource( 1 )
-offset = Vector2( 0, -8 )
+offset = Vector2( 0, -9 )
 region_enabled = true
-region_rect = Rect2( 69, 0, 24, 31.5 )
+region_rect = Rect2( 0, 0, 24, 31.5 )
 script = ExtResource( 2 )
+max_hp = 10
+healthbar_offset = 25
+type = 1
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 playback_speed = 2.0
@@ -33,7 +36,7 @@ anims/Idle = SubResource( 1 )
 
 [node name="Camera2D" type="Camera2D" parent="."]
 current = true
-zoom = Vector2( 0.35, 0.35 )
+zoom = Vector2( 0.3, 0.3 )
 drag_margin_h_enabled = false
 drag_margin_v_enabled = false
 smoothing_enabled = true
