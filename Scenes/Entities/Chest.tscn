@@ -1,11 +1,10 @@
 [gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://Environment/Animaciones/cofre_attack.png" type="Texture" id=1]
-[ext_resource path="res://Scenes/Chest.gd" type="Script" id=2]
+[ext_resource path="res://Scenes/Entities/Chest.gd" type="Script" id=2]
 
 [sub_resource type="Animation" id=1]
-resource_name = "Attack"
-length = 0.5
+length = 0.6
 step = 0.05
 tracks/0/type = "value"
 tracks/0/path = NodePath(".:region_rect")
@@ -14,10 +13,10 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5 ),
-"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
 "update": 2,
-"values": [ Rect2( 0, 0, 26, 27 ), Rect2( 26, 0, 26, 27 ), Rect2( 52, 0, 26, 27 ), Rect2( 78, 0, 26, 27 ), Rect2( 104, 0, 26, 27 ), Rect2( 130, 0, 26, 27 ), Rect2( 156, 0, 26, 27 ), Rect2( 182, 0, 26, 27 ), Rect2( 208, 0, 26, 27 ), Rect2( 234, 0, 26, 27 ), Rect2( 260, 0, 26, 27 ) ]
+"values": [ Rect2( 234, 0, 26, 27 ), Rect2( 26, 0, 26, 27 ), Rect2( 52, 0, 26, 27 ), Rect2( 78, 0, 26, 27 ), Rect2( 104, 0, 26, 27 ), Rect2( 130, 0, 26, 27 ), Rect2( 156, 0, 26, 27 ), Rect2( 182, 0, 26, 27 ), Rect2( 208, 0, 26, 27 ), Rect2( 234, 0, 26, 27 ), Rect2( 260, 0, 26, 27 ), Rect2( 234, 0, 26, 27 ), Rect2( 208, 0, 26, 27 ) ]
 }
 
 [node name="Chest" type="Sprite"]

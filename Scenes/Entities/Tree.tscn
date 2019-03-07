@@ -1,11 +1,24 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://Environment/Animaciones/arbol_idle.png" type="Texture" id=1]
-[ext_resource path="res://Scenes/Tree.gd" type="Script" id=2]
+[ext_resource path="res://Scenes/Entities/Tree.gd" type="Script" id=2]
 [ext_resource path="res://Environment/Animaciones/arbol_attack.png" type="Texture" id=3]
 
-[sub_resource type="Animation" id=1]
-resource_name = "Attack"
+[sub_resource type="Shader" id=1]
+code = "shader_type canvas_item;
+
+void fragment() {
+	vec4 sc = texture(SCREEN_TEXTURE,SCREEN_UV);
+	vec4 c = texture(TEXTURE,UV);
+	if(c.a == 1.0) COLOR = c;
+	else if(sc.g > sc.r && sc.r > sc.b) COLOR = c;
+	else COLOR = vec4(0,0,0,0);
+}"
+
+[sub_resource type="ShaderMaterial" id=2]
+shader = SubResource( 1 )
+
+[sub_resource type="Animation" id=3]
 length = 0.4
 tracks/0/type = "value"
 tracks/0/path = NodePath(".:region_rect")
@@ -32,7 +45,7 @@ tracks/1/keys = {
 "values": [ ExtResource( 3 ), ExtResource( 1 ) ]
 }
 
-[sub_resource type="Animation" id=2]
+[sub_resource type="Animation" id=4]
 length = 1.6
 loop = true
 tracks/0/type = "value"
@@ -49,6 +62,7 @@ tracks/0/keys = {
 }
 
 [node name="Tree" type="Sprite"]
+material = SubResource( 2 )
 texture = ExtResource( 1 )
 offset = Vector2( -3, -20 )
 region_enabled = true
@@ -59,7 +73,7 @@ is_blocking = true
 visible_health = false
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-anims/Attack = SubResource( 1 )
-anims/Idle = SubResource( 2 )
+anims/Attack = SubResource( 3 )
+anims/Idle = SubResource( 4 )
 
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_finished"]

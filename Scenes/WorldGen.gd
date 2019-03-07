@@ -12,10 +12,10 @@ var bridge_length = 5
 onready var flora = get_parent().get_node("Flora")
 onready var tilemap = get_parent().get_node("TileMap")
 
-var scene_tree = preload("res://Scenes/Tree.tscn")
-var scene_bush = preload("res://Scenes/Bush.tscn")
-var scene_zombie = preload("res://Scenes/Zombie.tscn")
-var scene_chest = preload("res://Scenes/Chest.tscn")
+var scene_tree = preload("res://Scenes/Entities/Tree.tscn")
+var scene_bush = preload("res://Scenes/Entities/Bush.tscn")
+var scene_zombie = preload("res://Scenes/Entities/Zombie.tscn")
+var scene_chest = preload("res://Scenes/Entities/Chest.tscn")
 
 var scene_bridge = preload("res://Scenes/Bridge.tscn")
 

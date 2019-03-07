@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Props/Poem.png" type="Texture" id=1]
+[ext_resource path="res://Scenes/Drops/Poem.gd" type="Script" id=2]
+
+[node name="Poem" type="Sprite"]
+texture = ExtResource( 1 )
+script = ExtResource( 2 )
+is_stackable = false
+consume_takes_turn = false
+

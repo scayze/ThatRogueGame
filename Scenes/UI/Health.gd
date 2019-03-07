@@ -8,10 +8,10 @@ signal bar_empty
 
 func _process(delta):
 	if bar.region_rect.size.x > bar_length:
-		bar.region_rect.size.x -= delta*50.0
+		bar.region_rect.size.x -= delta*75.0
 		if bar.region_rect.size.x < bar_length: bar.region_rect.size.x = bar_length
 	elif bar.region_rect.size.x < bar_length:
-		bar.region_rect.size.x += delta*50.0
+		bar.region_rect.size.x += delta*75.0
 		if bar.region_rect.size.x > bar_length: bar.region_rect.size.x = bar_length
 	
 	if bar.region_rect.size.x == bar_length && bar_length == 0:

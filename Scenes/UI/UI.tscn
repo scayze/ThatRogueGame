@@ -1,0 +1,129 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://Scenes/UI/UI.gd" type="Script" id=1]
+[ext_resource path="res://Scenes/UI/InvSpot.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Scenes/UI/PoemScreen.gd" type="Script" id=3]
+[ext_resource path="res://HUD/font/neutrino/Neutrino.ttf" type="DynamicFontData" id=4]
+
+[sub_resource type="DynamicFont" id=1]
+size = 24
+font_data = ExtResource( 4 )
+
+[sub_resource type="DynamicFont" id=2]
+font_data = ExtResource( 4 )
+
+[node name="UI" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 1 )
+
+[node name="HSplitContainer" type="HBoxContainer" parent="."]
+anchor_top = 0.811
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_constants/separation = 5
+alignment = 1
+
+[node name="InvSpot" parent="HSplitContainer" instance=ExtResource( 2 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 344.0
+margin_top = 16.0
+margin_right = 424.0
+margin_bottom = 96.0
+grow_horizontal = 0
+rect_min_size = Vector2( 80, 80 )
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="InvSpot2" parent="HSplitContainer" instance=ExtResource( 2 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 429.0
+margin_top = 16.0
+margin_right = 509.0
+margin_bottom = 96.0
+rect_min_size = Vector2( 80, 80 )
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="InvSpot3" parent="HSplitContainer" instance=ExtResource( 2 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 514.0
+margin_top = 16.0
+margin_right = 594.0
+margin_bottom = 96.0
+rect_min_size = Vector2( 80, 80 )
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="InvSpot4" parent="HSplitContainer" instance=ExtResource( 2 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 599.0
+margin_top = 16.0
+margin_right = 679.0
+margin_bottom = 96.0
+rect_min_size = Vector2( 80, 80 )
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="FadeOver" type="ColorRect" parent="."]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0, 0, 0, 0.627451 )
+
+[node name="PoemScreen" type="ColorRect" parent="."]
+visible = false
+anchor_left = 0.25
+anchor_top = 0.1
+anchor_right = 0.75
+anchor_bottom = 0.8
+color = Color( 0, 0, 0, 0.501961 )
+script = ExtResource( 3 )
+
+[node name="Site" type="Label" parent="PoemScreen"]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -93.0
+margin_top = -34.0
+margin_right = -5.0
+margin_bottom = -5.0
+custom_fonts/font = SubResource( 1 )
+text = "1/3"
+align = 2
+valign = 2
+
+[node name="Text" type="RichTextLabel" parent="PoemScreen"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 20.0
+margin_top = 15.0
+margin_right = -20.0
+margin_bottom = -25.0
+custom_fonts/normal_font = SubResource( 2 )
+text = "extends Sprite
+
+enum Type {
+	OBJECT
+	PLAYER
+	ENEMY
+	GOAL
+	GOAL_FADED
+}
+
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	z_index = -1
+
+func set_type(t):
+	if t == Type.PLAYER: region_rect = Rect2(0,0,16,16)
+	elif t == Type.ENEMY: region_rect = Rect2(16,0,16,16)
+	elif t == Type.GOAL: region_rect = Rect2(32,0,16,16)
+	elif t == Type.GOAL_FADED: region_rect = Rect2(48,0,16,16)
+	else: visible = false"
+

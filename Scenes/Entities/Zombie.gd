@@ -22,6 +22,6 @@ func on_turn():
 		return
 	
 	var path = astar.get_point_path(id,player.id)
-	if path.size() > 1:
+	if path.size() > 1 && path.size() < 10:
 		main.move_entity(self,Vector2(path[1].x,path[1].y)-pos)
 	can_move = false

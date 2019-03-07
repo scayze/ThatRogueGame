@@ -18,8 +18,8 @@ var main
 var rect
 var healthbar
 
-var scene_rect = preload("res://Scenes/Rect.tscn")
-var scene_health = preload("res://Scenes/Health.tscn")
+var scene_rect = preload("res://Scenes/UI/Rect.tscn")
+var scene_health = preload("res://Scenes/UI/Health.tscn")
 
 var hp = 1
 

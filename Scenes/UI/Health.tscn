@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=2]
 
-[ext_resource path="res://Scenes/Health.gd" type="Script" id=1]
+[ext_resource path="res://Scenes/UI/Health.gd" type="Script" id=1]
 [ext_resource path="res://HUD/HUD.PNG" type="Texture" id=2]
 
 [node name="Health" type="Node2D"]

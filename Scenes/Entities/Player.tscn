@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Characters/Main Character/character_iron.png" type="Texture" id=1]
-[ext_resource path="res://Scenes/Player.gd" type="Script" id=2]
+[ext_resource path="res://Scenes/Entities/Player.gd" type="Script" id=2]
 [ext_resource path="res://HUD/font/neutrino/Neutrino.ttf" type="DynamicFontData" id=3]
 
 [sub_resource type="Animation" id=1]
@@ -48,7 +48,7 @@ drag_margin_v_enabled = false
 smoothing_enabled = true
 smoothing_speed = 10.0
 
-[node name="Label" type="Label" parent="."]
+[node name="Energy" type="Label" parent="."]
 margin_left = -3.93783
 margin_top = -37.0622
 margin_right = 5.06217

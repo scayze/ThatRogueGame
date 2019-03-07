@@ -4,7 +4,6 @@ onready var player = get_node("Player")
 onready var tilemap = get_node("TileMap")
 onready var flora = get_node("Flora")
 onready var worldgen = get_node("WorldGen")
-var scene_test = preload("res://Scenes/Test.tscn")
 
 const map_width = 48
 const map_height = 26
@@ -13,6 +12,8 @@ onready var astar
 var map = []
 var entities = []
 var drops = []
+
+var game_paused = false
 
 onready var ui = get_node("Viewport/UI")
 
@@ -33,6 +34,8 @@ func init_map():
 	astar = AStar.new()
 	entities.clear()
 	map.clear()
+	ui.init(self,player)
+	game_paused = false
 	for x in range(0,map_width):
 		map.append([])
 		map[x].resize(map_height)
@@ -44,12 +47,18 @@ func init_map():
 		drops.append([])
 		drops[x].resize(map_height)
 	worldgen.reset()
+	ui.reset()
 	
-	worldgen.add_island(Vector2(6,3),15,0.1)
-	worldgen.add_island(Vector2(3,5),15,0.1)
-	worldgen.add_island(Vector2(4,5),15,0.1)
-	worldgen.add_island(Vector2(4,3),15,0.1)
-	worldgen.add_island(Vector2(4,4),15,0.1)
+#	worldgen.add_island(Vector2(6,3),15,0.1)
+#	worldgen.add_island(Vector2(3,5),15,0.1)
+#	worldgen.add_island(Vector2(4,5),15,0.1)
+#	worldgen.add_island(Vector2(4,3),15,0.1)
+#	worldgen.add_island(Vector2(4,4),15,0.1)
+	worldgen.add_island(Vector2(3,3),15,0.1)
+	worldgen.add_island(Vector2(3,3),15,0.1)
+	worldgen.add_island(Vector2(3,3),15,0.1)
+	worldgen.add_island(Vector2(3,3),15,0.1)
+	worldgen.add_island(Vector2(3,3),15,0.1)
 	worldgen.gen_navigation(astar)
 	worldgen.debug_print()
 	

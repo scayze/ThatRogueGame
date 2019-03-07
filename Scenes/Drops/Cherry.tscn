@@ -1,11 +1,10 @@
 [gd_scene load_steps=3 format=2]
 
-[ext_resource path="res://Props/props.png" type="Texture" id=1]
-[ext_resource path="res://Scenes/Cherry.gd" type="Script" id=2]
+[ext_resource path="res://Props/Cherry.png" type="Texture" id=1]
+[ext_resource path="res://Scenes/Drops/Cherry.gd" type="Script" id=2]
 
 [node name="Cherry" type="Sprite"]
 texture = ExtResource( 1 )
-region_enabled = true
 region_rect = Rect2( 69, 5, 6, 6 )
 script = ExtResource( 2 )
 

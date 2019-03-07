@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Props/RedPotion.png" type="Texture" id=1]
+[ext_resource path="res://Scenes/Drops/RedPotion.gd" type="Script" id=2]
+
+[node name="RedPotion" type="Sprite"]
+texture = ExtResource( 1 )
+script = ExtResource( 2 )
+
