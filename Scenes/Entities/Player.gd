@@ -22,18 +22,18 @@ func recover_energy(a):
 
 func equip_weapon(d):
 	if weapon:
-		main.spawn_drop(weapon,pos)
-		print("LOL")
-		main.worldgen.add_child(weapon)
+		weapon.queue_free()
 	weapon = d
 	main.ui.set_weapon(weapon)
 
 func _process(delta):
+	label_energy.text = str(energy)
 	if main.game_paused: return
 	timer_inactivity += delta
 	if timer_inactivity >= 1.0:
 		timer_inactivity = 0
 		energy -= 1
+		energy = clamp(energy,0,max_energy)
 	
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -43,22 +43,37 @@ func _ready():
 	invs.append(inv3)
 
 func on_init():
+	inv1 = null
+	inv2 = null
+	inv3 = null
+	main.ui.set_item(null,0)
+	main.ui.set_item(null,1)
+	main.ui.set_item(null,2)
+	weapon = null
 	healthbar.visible = true
 	energy = max_energy
 	var s = scene_sword.instance()
 	equip_weapon(s)
 
+
 func on_attack(e):
 	e.deal_damage(weapon.damage)
 
 func on_damage(d):
+	$Camera2D.shake(2)
 	pass
 
 func on_death():
-	main.remove_entity(self)
+	main.game_finished()
 
 func move(vec):
+	if energy == 0: 
+		rest()
+		return
+	energy -= 1
+	energy = clamp(energy,0,max_energy)
 	main.move_entity(self,vec)
+	timer_inactivity = 0
 	main.enemy_turn()
 	pass
 
@@ -84,13 +99,13 @@ func collect():
 	
 	if d.is_weapon:
 		equip_weapon(d)
-		pass
+		d.pick_up()
+		main.drops[pos.x][pos.y] = null
 	else:
 		if d.is_stackable:
-			var drop_type = d.get_script().get_path()
 			for i in range(invs.size()):
 				if invs[i]==null: continue
-				if drop_type == invs[i].get_script().get_path():
+				if d.type == invs[i].type:
 					invs[i].count += 1
 					main.ui.update_item(i)
 					d.queue_free()
@@ -105,6 +120,10 @@ func collect():
 				return
 	main.enemy_turn()
 
+func rest():
+	recover_energy(2)
+	main.enemy_turn()
+
 func _input(event):
 	#Block player input when game is paused
 	if main.game_paused: return
@@ -112,6 +131,8 @@ func _input(event):
 	if event.is_action_pressed("Left"):
 		flip_h = true;
 		move(Vector2(-1,0))
+	elif event.is_action_pressed("Rest"):
+		rest()
 	elif event.is_action_pressed("Right"):
 		flip_h = false;
 		move(Vector2(1,0))
@@ -132,6 +153,6 @@ func _input(event):
 			$Camera2D.zoom = Vector2(0.7,0.7)
 		elif event.scancode == KEY_X:
 			$Camera2D.zoom = Vector2(0.3,0.3)
-		elif event.scancode == KEY_R:
+		elif event.scancode == KEY_Z:
 			main.start_game()
 

@@ -6,6 +6,7 @@
 [node name="Poem" type="Sprite"]
 texture = ExtResource( 1 )
 script = ExtResource( 2 )
+type = "poem"
 is_stackable = false
 consume_takes_turn = false
 

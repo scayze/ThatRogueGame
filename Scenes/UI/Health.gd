@@ -14,7 +14,7 @@ func _process(delta):
 		bar.region_rect.size.x += delta*75.0
 		if bar.region_rect.size.x > bar_length: bar.region_rect.size.x = bar_length
 	
-	if bar.region_rect.size.x == bar_length && bar_length == 0:
+	if bar.region_rect.size.x == bar_length && bar_length == 0.0:
 		emit_signal("bar_empty")
 
 func set_health(p):

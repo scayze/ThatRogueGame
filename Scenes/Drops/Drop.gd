@@ -5,6 +5,7 @@ var pos = Vector2()
 var main
 var player : Entity
 
+export var type = ""
 export var is_weapon = false
 export var damage = 1
 export var is_stackable = true

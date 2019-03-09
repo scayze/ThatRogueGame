@@ -6,4 +6,5 @@
 [node name="RedPotion" type="Sprite"]
 texture = ExtResource( 1 )
 script = ExtResource( 2 )
+type = "red_potion"
 

@@ -7,7 +7,7 @@ var map = []
 var rects = []
 var available = []
 
-var bridge_length = 5
+#var bridge_length = 5
 
 onready var flora = get_parent().get_node("Flora")
 onready var tilemap = get_parent().get_node("TileMap")
@@ -18,6 +18,8 @@ var scene_zombie = preload("res://Scenes/Entities/Zombie.tscn")
 var scene_chest = preload("res://Scenes/Entities/Chest.tscn")
 
 var scene_bridge = preload("res://Scenes/Bridge.tscn")
+
+var scene_goal = preload("res://Scenes/Goal.tscn")
 
 var island_count = 0
 # Called when the node enters the scene tree for the first time.
@@ -102,46 +104,60 @@ func spawn_fucks():
 		get_parent().spawn_entity(zomb,available[r])
 		available.remove(r)
 
+# The least efficient algorithm ever invented, and im proud of it
+# So dont judge and go fuck yourself, future self.
 func choose_island_spawns():
 	var island_spawns = []
 	var island_bridge = []
+	var island_dir = []
 	#debug_print()
-	for x in range(1,w-1):
-		for y in range(1,h-1):
-			if typeof(map[x][y]) != TYPE_INT: continue
-			var line
-			
-			#Left
-			line = Rect2(x-bridge_length,y-1,bridge_length,3)
-			if check_for_overlap(line):
-				var rect = Rect2(x-bridge_length-3,y-1,3,3)
-				if check_for_overlap(rect):
-					island_spawns.append(rect)
-					island_bridge.append(line)
-			#Right
-			line = Rect2(x+1,y-1,bridge_length,3)
-			if check_for_overlap(line):
-				var rect = Rect2(x+bridge_length+1,y-1,3,3)
-				if check_for_overlap(rect):
-					island_spawns.append(rect)
-					island_bridge.append(line)
-			#Up
-			line = Rect2(x-1,y-bridge_length,3,bridge_length)
-			if check_for_overlap(line):
-				var rect = Rect2(x-1,y-bridge_length-3,3,3)
-				if check_for_overlap(rect):
-					island_spawns.append(rect)
-					island_bridge.append(line)
-			#Down
-			line = Rect2(x-1,y+1,3,bridge_length)
-			if check_for_overlap(line):
-				var rect = Rect2(x-1,y+bridge_length+1,3,3)
-				if check_for_overlap(rect):
-					island_spawns.append(rect)
-					island_bridge.append(line)
+	for bridge_length in range(2,6):
+		for x in range(1,w-1):
+			for y in range(1,h-1):
+				if typeof(map[x][y]) != TYPE_INT: continue
+				var line
+				
+				var to = 1
+				if map[x][y] == 0:
+					#print("SPAMM")
+					to = 5
+				
+				for q in range(0,to):
+					#Left
+					line = Rect2(x-bridge_length,y-1,bridge_length,3)
+					if check_for_overlap(line):
+						var rect = Rect2(x-bridge_length-3,y-1,3,3)
+						if check_for_overlap(rect):
+							island_spawns.append(rect)
+							island_bridge.append(line)
+							island_dir.append(true)
+					#Right
+					line = Rect2(x+1,y-1,bridge_length,3)
+					if check_for_overlap(line):
+						var rect = Rect2(x+bridge_length+1,y-1,3,3)
+						if check_for_overlap(rect):
+							island_spawns.append(rect)
+							island_bridge.append(line)
+							island_dir.append(true)
+					#Up
+					line = Rect2(x-1,y-bridge_length,3,bridge_length)
+					if check_for_overlap(line):
+						var rect = Rect2(x-1,y-bridge_length-3,3,3)
+						if check_for_overlap(rect):
+							island_spawns.append(rect)
+							island_bridge.append(line)
+							island_dir.append(false)
+					#Down
+					line = Rect2(x-1,y+1,3,bridge_length)
+					if check_for_overlap(line):
+						var rect = Rect2(x-1,y+bridge_length+1,3,3)
+						if check_for_overlap(rect):
+							island_spawns.append(rect)
+							island_bridge.append(line)
+							island_dir.append(false)
 	
 	var r = rand_range(0,island_spawns.size())
-	return [island_spawns[r],island_bridge[r]]
+	return [island_spawns[r],island_bridge[r],island_dir[r]]
 
 func rect_fill_array(r : Rect2, a : Array):
 	for x in range(r.size.x):
@@ -181,11 +197,11 @@ func gen_navigation(astar):
 				if x > 0 and astar.has_point(id-1): astar.connect_points(id,id-1)
 	tilemap.autotile()
 
-func build_bridge(r : Rect2):
+func build_bridge(r : Rect2, is_horizontal):
 	var b = scene_bridge.instance()
 	add_child(b)
 	var ar = []
-	if r.size.y == 3:
+	if is_horizontal:
 		b.position = (r.position + Vector2(0,1)) * 16
 		b.place_bridge(true,r.size.x)
 		rect_fill_array(r.grow_individual(0,-1,0,-1),ar)
@@ -195,6 +211,37 @@ func build_bridge(r : Rect2):
 		rect_fill_array(r.grow_individual(-1,0,-1,0),ar)
 	for p in ar:
 		map[p.x][p.y] = "#"
+
+func place_goal_island():
+	var rpos = Vector2(w/2,h/2)#Vector2(rand_range(2,w-6),rand_range(2,h-6))
+	rpos = rpos.round()
+	var rect_inner = Rect2(rpos,Vector2(3,3))
+	var rect_outer = Rect2(rpos,Vector2(5,5))
+	
+	var rect_ul = Rect2(rpos + Vector2(-1,-1),Vector2(1,1))
+	var rect_ur = Rect2(rpos + Vector2(3,-1),Vector2(1,1))
+	var rect_dl = Rect2(rpos + Vector2(-1,3),Vector2(1,1))
+	var rect_dr = Rect2(rpos + Vector2(3,3),Vector2(1,1))
+	rects.append(rect_ul)
+	rects.append(rect_ur)
+	rects.append(rect_dl)
+	rects.append(rect_dr)
+	
+	var goal = scene_goal.instance()
+	goal.pos = rpos + Vector2(1,1)
+	goal.position = goal.pos * 16
+	goal.player = get_parent().player
+	goal.main = get_parent()
+	goal.z_index = goal.pos.y
+	add_child(goal)
+	
+	get_parent().goal = goal
+	
+	for x in rect_inner.size.x:
+		for y in rect_inner.size.y:
+			map[x+rpos.x][y+rpos.y] = island_count
+	rects.append(rect_inner)
+	island_count += 1
 
 func add_island(init_size : Vector2,depth,decrease):
 	randomize()
@@ -206,10 +253,11 @@ func add_island(init_size : Vector2,depth,decrease):
 		var spawn = choose_island_spawns()
 		var start = spawn[0]
 		var line = spawn[1]
+		var is_horizontal = spawn[2]
 		rect_fill_array(start,island)
 		current_rects.append(start)
 		rects.append(line)
-		build_bridge(line)
+		build_bridge(line,is_horizontal)
 		for x in start.size.x:
 			for y in start.size.y:
 				map[x+start.position.x][y+start.position.y] = island_count

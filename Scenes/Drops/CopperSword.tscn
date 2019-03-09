@@ -6,6 +6,7 @@
 [node name="CopperSword" type="Sprite"]
 texture = ExtResource( 1 )
 script = ExtResource( 2 )
+type = "copper_sword"
 is_weapon = true
 damage = 2
 is_stackable = false

@@ -1,17 +1,23 @@
 extends Node
 
+var scene_player = preload("res://Scenes/Entities/Player.tscn")
 onready var player = get_node("Player")
+onready var camera = get_node("Camera2D")
 onready var tilemap = get_node("TileMap")
 onready var flora = get_node("Flora")
 onready var worldgen = get_node("WorldGen")
 
-const map_width = 48
-const map_height = 26
+const map_width = 48#96
+const map_height = 26#128
 
-onready var astar
+var score = 0
+
+onready var astar : AStar
 var map = []
+var terrain = []
 var entities = []
 var drops = []
+var goal = null
 
 var game_paused = false
 
@@ -19,46 +25,63 @@ onready var ui = get_node("Viewport/UI")
 
 
 func _ready():
-	start_game()
+	ui.main = self
+	ui.set_state(ui.state.MENU)
+	astar = AStar.new()
 	pass
 
+func start_game():
+	if player: player.queue_free()
+	player = scene_player.instance()
+	add_child(player)
+	#spawn_entity(player)
+	player.init(astar,player,self)
+	ui.init(player)
+	score = 0
+	next_stage()
 
-func id_to_pos(i):
-	return Vector2(fmod(i,map_width), floor(i / map_width))
-	
-func pos_to_id(x,y):
-	return x+y*map_width
+func game_finished():
+	game_paused = true
+	ui.set_state(ui.state.GAME_DEATH)
+	HighScores.save_score(score)
 
-#WHAT THE FUCK DID I DO AND WHY DOES IT WORK
+func finished_stage():
+	next_stage()
+
+func next_stage():
+	init_map()
+
+func clear_everything():
+	pass
+
 func init_map():
-	astar = AStar.new()
+	#Clear the astar navigation
+	astar.clear()
+	#Clear all entity references from last stage
 	entities.clear()
-	map.clear()
-	ui.init(self,player)
+	#Unpause game in case it was
 	game_paused = false
+	#Clear map, terrain, drops etc
+	map.clear()
+	drops.clear()
+	tilemap.clear()
+	flora.clear()
+	#Recreate the map array
 	for x in range(0,map_width):
 		map.append([])
 		map[x].resize(map_height)
-	
-	tilemap.clear()
-	flora.clear()
-	drops.clear()
+	#Recreate the drop array
 	for x in range(0,map_width):
 		drops.append([])
 		drops[x].resize(map_height)
 	worldgen.reset()
-	ui.reset()
 	
-#	worldgen.add_island(Vector2(6,3),15,0.1)
-#	worldgen.add_island(Vector2(3,5),15,0.1)
-#	worldgen.add_island(Vector2(4,5),15,0.1)
-#	worldgen.add_island(Vector2(4,3),15,0.1)
-#	worldgen.add_island(Vector2(4,4),15,0.1)
-	worldgen.add_island(Vector2(3,3),15,0.1)
-	worldgen.add_island(Vector2(3,3),15,0.1)
-	worldgen.add_island(Vector2(3,3),15,0.1)
-	worldgen.add_island(Vector2(3,3),15,0.1)
-	worldgen.add_island(Vector2(3,3),15,0.1)
+	worldgen.place_goal_island()
+	worldgen.add_island(Vector2(4,4),15,0.1)
+	worldgen.add_island(Vector2(4,4),15,0.1)
+	worldgen.add_island(Vector2(4,4),15,0.1)
+	worldgen.add_island(Vector2(4,4),15,0.1)
+	worldgen.add_island(Vector2(4,4),15,0.1)
 	worldgen.gen_navigation(astar)
 	worldgen.debug_print()
 	
@@ -68,15 +91,15 @@ func init_map():
 	worldgen.beautify()
 	worldgen.spawn_fucks()
 	
+	terrain = worldgen.map
+	
 	worldgen.clean()
-	
-	
 	
 	var random_position = Vector3(rand_range(10,map_width-10),rand_range(10,map_height-10),0)
 	print(random_position)
 	player.id = astar.get_closest_point(random_position)
-	player.init(astar,player,self)
 	player.update()
+	map[player.pos.x][player.pos.y] = player
 
 func spawn_drop(drop,pos):
 	if drops[pos.x][pos.y]:
@@ -96,7 +119,7 @@ func spawn_entity(entity, pos):
 	map[pos.x][pos.y] = entity
 	entities.append(entity)
 	if entity.is_blocking:
-		astar.set_point_weight_scale(entity.id,100)#disconnect_nav(entity.id)
+		astar.set_point_weight_scale(entity.id,100)
 	entity.init(astar,player,self)
 	entity.update()
 
@@ -114,6 +137,7 @@ func move_entity(entity, dir):
 			entity.id = new_id
 		else:
 			entity.attack(map[new_pos.x][new_pos.y])
+	else: player.recover_energy(2)
 	entity.update()
 
 func remove_entity(entity):
@@ -122,28 +146,28 @@ func remove_entity(entity):
 		print("Trying to remove non existing entity")
 		return
 	if entity.is_blocking:
-		astar.set_point_weight_scale(entity.id,1)#reconnect_nav(entity.id)
+		astar.set_point_weight_scale(entity.id,1)
 	entities.remove(idx)
+	
+	var enemies_dead = true
+	for e in entities:
+		if e.type == Entity.Type.ENEMY:
+			enemies_dead = false
+			break
+	if enemies_dead: goal.set_active(true)
+	
 	map[entity.pos.x][entity.pos.y] = null
 
-func start_game():
-	init_map()
 
 func enemy_turn():
 	for e in entities:
 		e.take_turn()
 
-func disconnect_nav(id):
-	var cons = astar.get_point_connections(id)
-	print(cons.size())
-	for c in cons:
-		astar.disconnect_points(id,c)
+func id_to_pos(i):
+	return Vector2(fmod(i,map_width), floor(i / map_width))
+	
+func pos_to_id(x,y):
+	return x+y*map_width
 
-func reconnect_nav(id):
-	if astar.has_point(id-1): astar.connect_points(id,id-1)
-	if astar.has_point(id+1): astar.connect_points(id,id+1)
-	if astar.has_point(id-map_width): astar.connect_points(id,id-map_width)
-	if astar.has_point(id+map_width): astar.connect_points(id,id+map_width)
-
-func get_closest_point(id):
-	pass # todo Implement
+func get_closest_point(pos):
+	var p = [pos]

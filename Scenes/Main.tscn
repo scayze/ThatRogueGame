@@ -1,11 +1,10 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://Scenes/Main.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/WorldGen.gd" type="Script" id=2]
 [ext_resource path="res://Environment/tileset.png" type="Texture" id=3]
 [ext_resource path="res://Scenes/TileMap.gd" type="Script" id=4]
-[ext_resource path="res://Scenes/Entities/Player.tscn" type="PackedScene" id=5]
-[ext_resource path="res://Scenes/UI/UI.tscn" type="PackedScene" id=6]
+[ext_resource path="res://Scenes/UI/UI.tscn" type="PackedScene" id=5]
 
 [sub_resource type="TileSet" id=1]
 0/name = "tileset.png 0"
@@ -267,10 +266,7 @@ tile_set = SubResource( 2 )
 cell_size = Vector2( 16, 16 )
 format = 1
 
-[node name="Player" parent="." instance=ExtResource( 5 )]
-position = Vector2( 192.231, 16.8732 )
-
 [node name="Viewport" type="CanvasLayer" parent="."]
 
-[node name="UI" parent="Viewport" instance=ExtResource( 6 )]
+[node name="UI" parent="Viewport" instance=ExtResource( 5 )]
 

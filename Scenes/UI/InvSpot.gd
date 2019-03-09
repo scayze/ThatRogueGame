@@ -14,11 +14,6 @@ var id
 func _ready():
 	pass # Replace with function body.
 
-func clear():
-	picture.texture = null
-	label_count.visible = false
-	item = null
-
 func init(m,p,idx):
 	main = m
 	player = p
@@ -30,8 +25,10 @@ func set_selected(b):
 
 func update():
 	if item == null:
-		clear()
+		picture.texture = null
+		label_count.visible = false
 		return
+	else: picture.texture = item.texture
 	if item.is_stackable:
 		label_count.visible = true
 		label_count.text = str(item.count)
@@ -40,9 +37,6 @@ func update():
 func set_item(i):
 	item = i
 	update()
-	print("SET ITEM")
-	if i== null: picture.texture = null
-	else: picture.texture = i.texture
 
 func _on_pressed():
 	player.consume(id)

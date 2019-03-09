@@ -28,12 +28,23 @@ export var is_blocking = false
 export var is_attackable = true
 export var visible_health = true
 export var healthbar_offset = 0
+export var crit_chance = 0.2
+export var crit_multiplier = 2.0
 
 export(Type) var type = Type.OBJECT
 
+var anim_blink = preload("res://Animations/Blink.tres")
+onready var blink_player = AnimationPlayer.new()
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	blink_player.add_animation("Blink",anim_blink)
 	pass # Replace with function body.
+
+func _process(delta):
+	#Fade to correct position, looks waaaaaay better
+	var goal_position = pos * 16 + Vector2(8,8)
+	position += (goal_position - position) * clamp(delta * 50,0,1)
 
 func init(nav,hero,m):
 	astar = nav
@@ -41,6 +52,7 @@ func init(nav,hero,m):
 	main = m
 	
 	hp = max_hp
+	position = pos * 16 + Vector2(8,8)
 	
 	rect = scene_rect.instance()
 	rect.set_type(type)
@@ -73,11 +85,16 @@ func heal(a):
 	healthbar.set_health(float(hp)/max_hp)
 
 func deal_damage(d):
+	var r = rand_range(0,1)
+	if r<= crit_chance:
+		d *= crit_multiplier
 	if has_method("on_damage"): call("on_damage",d)
 	if is_attackable:
 		hp -= d
+		hp = clamp(hp,0,max_hp)
 		healthbar.set_health(float(hp)/max_hp)
 		if visible_health:
+			blink_player.play("Blink")
 			healthbar.visible = true
 	if hp <= 0: die()
 
@@ -90,7 +107,7 @@ func die():
 func update():
 	pos = id_to_pos(id)
 	z_index = pos.y
-	position = pos * 16 + Vector2(8,8)
+	#position = pos * 16 + Vector2(8,8)
 	#print(id)
 	#print(pos)
 	pass

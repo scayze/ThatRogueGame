@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Props/IronSword.png" type="Texture" id=1]
+[ext_resource path="res://Scenes/Drops/IronSword.gd" type="Script" id=2]
+
+[node name="IronSword" type="Sprite"]
+texture = ExtResource( 1 )
+script = ExtResource( 2 )
+type = "iron_sword"
+is_weapon = true
+damage = 2
+is_stackable = false
+consume_takes_turn = false
+

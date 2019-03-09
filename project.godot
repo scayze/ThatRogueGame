@@ -31,6 +31,10 @@ run/main_scene="res://Scenes/Main.tscn"
 boot_splash/bg_color=Color( 0.337255, 0.596078, 0.776471, 1 )
 config/icon="res://icon.png"
 
+[autoload]
+
+HighScores="*res://Autoloads/HighScores.gd"
+
 [input]
 
 ui_left={
@@ -99,8 +103,14 @@ bar_right={
 "events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":16777233,"unicode":0,"echo":false,"script":null)
  ]
 }
+Rest={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":82,"unicode":0,"echo":false,"script":null)
+ ]
+}
 
 [rendering]
 
+quality/2d/use_pixel_snap=true
 environment/default_clear_color=Color( 0.337255, 0.596078, 0.776471, 1 )
 environment/default_environment="res://default_env.tres"

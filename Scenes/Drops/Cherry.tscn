@@ -7,4 +7,5 @@
 texture = ExtResource( 1 )
 region_rect = Rect2( 69, 5, 6, 6 )
 script = ExtResource( 2 )
+type = "cherry"
 
