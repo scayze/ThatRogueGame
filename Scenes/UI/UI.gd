@@ -22,6 +22,9 @@ onready var inv1 = get_node("Game/HSplitContainer/InvSpot")
 onready var inv2 = get_node("Game/HSplitContainer/InvSpot2")
 onready var inv3 = get_node("Game/HSplitContainer/InvSpot3")
 onready var inv4 = get_node("Game/HSplitContainer/InvSpot4")
+
+var score_line = preload("res://Scenes/UI/ScoreLine.tscn")
+
 var spots = []
 
 var poems = []
@@ -76,6 +79,14 @@ func set_state(s):
 		state_menu.visible = false
 		state_highscores.visible = true
 		state_credits.visible = false
+		var control_container = get_node("Highscores/VBoxContainer")
+		var highscores = HighScores.get_scores()
+		
+		for i in range(clamp(highscores.size(),0,10)):
+			var d = score_line.instance()
+			control_container.add_child(d)
+			d.get_node("Num").text = str(i+1)
+			d.get_node("Score").text = str(highscores[i])
 	elif s == state.CREDITS:
 		state_game_death.visible = false
 		state_game.visible = false

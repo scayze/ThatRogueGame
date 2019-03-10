@@ -1,5 +1,8 @@
 extends Node
 
+var start_width = 48#96
+var start_height = 26#128
+
 onready var w = get_parent().map_width
 onready var h = get_parent().map_height
 
@@ -14,8 +17,14 @@ onready var tilemap = get_parent().get_node("TileMap")
 
 var scene_tree = preload("res://Scenes/Entities/Tree.tscn")
 var scene_bush = preload("res://Scenes/Entities/Bush.tscn")
-var scene_zombie = preload("res://Scenes/Entities/Zombie.tscn")
 var scene_chest = preload("res://Scenes/Entities/Chest.tscn")
+
+var scene_zombie = preload("res://Scenes/Entities/Zombie.tscn")
+var scene_slime = preload("res://Scenes/Entities/Slime.tscn")
+var scene_snake = preload("res://Scenes/Entities/Snake.tscn")
+var scene_golem = preload("res://Scenes/Entities/Golem.tscn")
+var scene_skeleton = preload("res://Scenes/Entities/Skeleton.tscn")
+var scene_cube = preload("res://Scenes/Entities/Cube.tscn")
 
 var scene_bridge = preload("res://Scenes/Bridge.tscn")
 
@@ -49,6 +58,28 @@ func reset():
 	for x in range(0,w):
 		map.append([])
 		map[x].resize(h)
+
+func generate_level(l):
+	reset()
+	
+	place_goal_island()
+	add_island(Vector2(4,4),15,0.1)
+	add_island(Vector2(4,4),15,0.1)
+	add_island(Vector2(4,4),15,0.1)
+	add_island(Vector2(4,4),15,0.1)
+	add_island(Vector2(4,4),15,0.1)
+	gen_navigation(get_parent().astar)
+	debug_print()
+	
+	gather_available()
+	place_chests()
+	plant_trees()
+	beautify()
+	spawn_fucks()
+	
+	get_parent().terrain = map
+	
+	clean()
 
 func gather_available():
 	for x in range(w):
@@ -96,12 +127,25 @@ func plant_trees():
 		get_parent().spawn_entity(bush,available[r])
 
 func spawn_fucks():
-	for i in range(10):
+	var possible_fucks = []
+	if get_parent().current_level >= 0: possible_fucks.append(scene_slime)
+	if get_parent().current_level >= 0: possible_fucks.append(scene_snake)
+	if get_parent().current_level >= 0: possible_fucks.append(scene_zombie)
+	if get_parent().current_level >= 0: possible_fucks.append(scene_golem)
+	if get_parent().current_level >= 0: possible_fucks.append(scene_skeleton)
+	if get_parent().current_level >= 0: possible_fucks.append(scene_cube)
+	
+	var fucks = []
+	for i in range(10+get_parent().current_level*2):
+		var r = rand_range(0,possible_fucks.size())
+		fucks.append(possible_fucks[r])
+	
+	for f in fucks:
 		if available.size() == 0: return
 		var r = rand_range(0,available.size())
-		var zomb = scene_zombie.instance()
-		add_child(zomb)
-		get_parent().spawn_entity(zomb,available[r])
+		var enemy = f.instance()
+		add_child(enemy)
+		get_parent().spawn_entity(enemy,available[r])
 		available.remove(r)
 
 # The least efficient algorithm ever invented, and im proud of it

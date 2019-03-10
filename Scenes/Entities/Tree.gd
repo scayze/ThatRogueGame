@@ -2,10 +2,22 @@ extends Entity
 
 onready var anim = get_node("AnimationPlayer")
 
-# Called when the node enters the scene tree for the first time.
+export var drop_chance = 0.4
+var scene_apple = preload("res://Scenes/Drops/Apple.tscn")
+
 func _ready():
 	anim.play("Idle")
-	pass # Replace with function body.
+
+func on_death():
+	var r = rand_range(0,1)
+	if r <= drop_chance:
+		var drop = scene_apple.instance()
+		get_parent().add_child(drop)
+		main.spawn_drop(drop,pos)
+	
+	main.remove_entity(self)
+	queue_free()
+
 
 func on_damage(d):
 	anim.play("Attack")

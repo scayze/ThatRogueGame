@@ -15,6 +15,7 @@ func get_scores():
 	scores.remove(scores.size()-1)
 	file.close()
 	scores.sort()
+	scores.invert()
 	return scores
 
 func save_score(score):

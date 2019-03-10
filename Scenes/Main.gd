@@ -1,14 +1,13 @@
 extends Node
 
 var scene_player = preload("res://Scenes/Entities/Player.tscn")
-onready var player = get_node("Player")
-onready var camera = get_node("Camera2D")
+onready var player= null
 onready var tilemap = get_node("TileMap")
 onready var flora = get_node("Flora")
 onready var worldgen = get_node("WorldGen")
 
-const map_width = 48#96
-const map_height = 26#128
+var map_width = 48#96
+var map_height = 26#128
 
 var score = 0
 
@@ -18,6 +17,8 @@ var terrain = []
 var entities = []
 var drops = []
 var goal = null
+
+var current_level = 0
 
 var game_paused = false
 
@@ -38,7 +39,13 @@ func start_game():
 	player.init(astar,player,self)
 	ui.init(player)
 	score = 0
+	ui.update_score(score)
 	next_stage()
+
+func add_score(p):
+	score += p
+	if score < 0: score = 0
+	ui.update_score(score)
 
 func game_finished():
 	game_paused = true
@@ -46,6 +53,7 @@ func game_finished():
 	HighScores.save_score(score)
 
 func finished_stage():
+	current_level += 1
 	next_stage()
 
 func next_stage():
@@ -74,26 +82,8 @@ func init_map():
 	for x in range(0,map_width):
 		drops.append([])
 		drops[x].resize(map_height)
-	worldgen.reset()
 	
-	worldgen.place_goal_island()
-	worldgen.add_island(Vector2(4,4),15,0.1)
-	worldgen.add_island(Vector2(4,4),15,0.1)
-	worldgen.add_island(Vector2(4,4),15,0.1)
-	worldgen.add_island(Vector2(4,4),15,0.1)
-	worldgen.add_island(Vector2(4,4),15,0.1)
-	worldgen.gen_navigation(astar)
-	worldgen.debug_print()
-	
-	worldgen.gather_available()
-	worldgen.place_chests()
-	worldgen.plant_trees()
-	worldgen.beautify()
-	worldgen.spawn_fucks()
-	
-	terrain = worldgen.map
-	
-	worldgen.clean()
+	worldgen.generate_level(current_level)
 	
 	var random_position = Vector3(rand_range(10,map_width-10),rand_range(10,map_height-10),0)
 	print(random_position)
@@ -137,7 +127,7 @@ func move_entity(entity, dir):
 			entity.id = new_id
 		else:
 			entity.attack(map[new_pos.x][new_pos.y])
-	else: player.recover_energy(2)
+	elif entity == player: player.recover_energy(7)
 	entity.update()
 
 func remove_entity(entity):
@@ -154,7 +144,9 @@ func remove_entity(entity):
 		if e.type == Entity.Type.ENEMY:
 			enemies_dead = false
 			break
-	if enemies_dead: goal.set_active(true)
+	if enemies_dead:
+		goal.set_active(true)
+		player.recover_energy(1337)
 	
 	map[entity.pos.x][entity.pos.y] = null
 
@@ -162,6 +154,7 @@ func remove_entity(entity):
 func enemy_turn():
 	for e in entities:
 		e.take_turn()
+	player.take_turn()
 
 func id_to_pos(i):
 	return Vector2(fmod(i,map_width), floor(i / map_width))

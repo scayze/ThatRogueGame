@@ -1,7 +1,7 @@
 extends Entity
 
 var energy = 0
-export var max_energy = 20
+export var max_energy = 100
 var poems_collected = 0
 var weapon = null
 var inv1 = null
@@ -17,6 +17,7 @@ onready var label_energy = get_node("Energy")
 var scene_sword = preload("res://Scenes/Drops/CopperSword.tscn")
 
 func recover_energy(a):
+	if a < 0 && main.goal.active: return
 	energy += a
 	energy = clamp(energy,0,max_energy)
 
@@ -32,8 +33,9 @@ func _process(delta):
 	timer_inactivity += delta
 	if timer_inactivity >= 1.0:
 		timer_inactivity = 0
-		energy -= 1
-		energy = clamp(energy,0,max_energy)
+		main.add_score(-10)
+		#energy -= 1
+		#energy = clamp(energy,0,max_energy)
 	
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -51,29 +53,39 @@ func on_init():
 	main.ui.set_item(null,2)
 	weapon = null
 	healthbar.visible = true
+	visible = true
 	energy = max_energy
 	var s = scene_sword.instance()
 	equip_weapon(s)
 
+func on_turn():
+	stunned -= 1
+	if stunned < 0: stunned = 0
 
 func on_attack(e):
 	e.deal_damage(weapon.damage)
 
 func on_damage(d):
+	recover_energy(-8)
+	#get_node("Sprite").visible = true
+	#get_node("Sprite").frame = 0
+	#get_node("Sprite").play("New Anim")
+	#self_modulate = Color(1,1,1,0)
 	$Camera2D.shake(2)
 	pass
 
 func on_death():
 	main.game_finished()
+	visible = false
 
 func move(vec):
-	if energy == 0: 
-		rest()
-		return
-	energy -= 1
-	energy = clamp(energy,0,max_energy)
-	main.move_entity(self,vec)
-	timer_inactivity = 0
+	if stunned == 0:
+		if energy == 0: 
+			rest()
+			return
+		recover_energy(-2)
+		main.move_entity(self,vec)
+		timer_inactivity = 0
 	main.enemy_turn()
 	pass
 
@@ -121,7 +133,7 @@ func collect():
 	main.enemy_turn()
 
 func rest():
-	recover_energy(2)
+	recover_energy(5)
 	main.enemy_turn()
 
 func _input(event):
@@ -130,11 +142,13 @@ func _input(event):
 	
 	if event.is_action_pressed("Left"):
 		flip_h = true;
+		get_node("Sprite").flip_h = true
 		move(Vector2(-1,0))
 	elif event.is_action_pressed("Rest"):
 		rest()
 	elif event.is_action_pressed("Right"):
 		flip_h = false;
+		get_node("Sprite").flip_h = false
 		move(Vector2(1,0))
 	elif event.is_action_pressed("Up"):
 		move(Vector2(0,-1))
@@ -156,3 +170,8 @@ func _input(event):
 		elif event.scancode == KEY_Z:
 			main.start_game()
 
+
+
+func _on_Sprite_animation_finished(): pass
+	#self_modulate = Color(1,1,1,1)
+	#get_node("Sprite").visible = false

@@ -68,7 +68,7 @@ offset = Vector2( -3, -20 )
 region_enabled = true
 region_rect = Rect2( 171, 0, 57, 59 )
 script = ExtResource( 2 )
-max_hp = 3
+max_hp = 4
 is_blocking = true
 visible_health = false
 
