@@ -23,8 +23,12 @@ tracks/0/keys = {
 [node name="Skeleton" type="Sprite"]
 texture = ExtResource( 1 )
 region_enabled = true
-region_rect = Rect2( 30, 0, 15, 26 )
+region_rect = Rect2( 60, 0, 15, 26 )
 script = ExtResource( 2 )
+max_hp = 4
+healthbar_offset = 18
+type = 2
+damage_sound = "res://Audio/esqueleto_daño.ogg"
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 playback_speed = 0.3

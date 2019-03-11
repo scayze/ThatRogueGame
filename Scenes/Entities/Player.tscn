@@ -83,8 +83,8 @@ tracks/0/keys = {
 }
 
 [sub_resource type="DynamicFont" id=2]
-size = 8
-outline_color = Color( 0, 0, 0, 1 )
+outline_size = 1
+outline_color = Color( 0.164706, 0.152941, 0.321569, 1 )
 font_data = ExtResource( 5 )
 
 [sub_resource type="SpriteFrames" id=3]
@@ -104,6 +104,7 @@ script = ExtResource( 2 )
 max_hp = 15
 healthbar_offset = 25
 type = 1
+sound_step = "res://Audio/paso_personaje_1.ogg"
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 playback_speed = 2.0
@@ -120,13 +121,16 @@ smoothing_speed = 10.0
 script = ExtResource( 4 )
 
 [node name="Energy" type="Label" parent="."]
-margin_left = -3.93783
-margin_top = -37.0622
-margin_right = 5.06217
-margin_bottom = -27.0622
+margin_left = -5.92441
+margin_top = -37.357
+margin_right = 18.0756
+margin_bottom = -17.357
+rect_scale = Vector2( 0.5, 0.5 )
 custom_fonts/font = SubResource( 2 )
-custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
 text = "123"
+align = 1
+valign = 1
 
 [node name="Sprite" type="AnimatedSprite" parent="."]
 visible = false

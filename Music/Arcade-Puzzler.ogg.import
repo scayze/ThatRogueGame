@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/Arcade-Puzzler.ogg-21d55b1735ecfe9d615a0497ecc3f6ce.oggstr"
+
+[deps]
+
+source_file="res://Music/Arcade-Puzzler.ogg"
+dest_files=[ "res://.import/Arcade-Puzzler.ogg-21d55b1735ecfe9d615a0497ecc3f6ce.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

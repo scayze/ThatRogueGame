@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/esqueleto_daño.ogg-c88cc6e284495a11643070247137c42c.oggstr"
+
+[deps]
+
+source_file="res://Audio/esqueleto_daño.ogg"
+dest_files=[ "res://.import/esqueleto_daño.ogg-c88cc6e284495a11643070247137c42c.oggstr" ]
+
+[params]
+
+loop=false
+loop_offset=0

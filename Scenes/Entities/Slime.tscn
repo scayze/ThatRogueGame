@@ -28,6 +28,7 @@ region_rect = Rect2( 78, 0, 26, 18 )
 script = ExtResource( 2 )
 healthbar_offset = 10
 type = 2
+damage_sound = "res://Audio/slime_daño_2.ogg"
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 playback_speed = 0.6

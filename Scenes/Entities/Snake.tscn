@@ -23,9 +23,10 @@ tracks/0/keys = {
 [node name="Snake" type="Sprite"]
 texture = ExtResource( 1 )
 region_enabled = true
-region_rect = Rect2( 88, 0, 22, 21 )
+region_rect = Rect2( 22, 0, 22, 21 )
 script = ExtResource( 2 )
 type = 2
+damage_sound = "res://Audio/snake_daño_1.ogg"
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/Idle = SubResource( 1 )

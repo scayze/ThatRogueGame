@@ -3,7 +3,7 @@ class_name Drop
 
 var pos = Vector2()
 var main
-var player : Entity
+var player
 
 export var type = ""
 export var is_weapon = false

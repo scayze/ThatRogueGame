@@ -12,7 +12,7 @@ func _ready():
 
 func on_death():
 	main.remove_entity(self)
-	main.add_score(20)
+	main.add_score(50)
 
 func on_init():
 	if main.current_level > 3: texture = stage_2

@@ -17,7 +17,7 @@ func on_init():
 
 func on_death():
 	main.remove_entity(self)
-	main.add_score(20)
+	main.add_score(100)
 
 func on_health_empty():
 	queue_free()

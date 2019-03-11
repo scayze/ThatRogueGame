@@ -5,4 +5,4 @@ func _ready():
 	pass # Replace with function body.
 
 func consume():
-	player.heal(10)
+	player.heal(5)

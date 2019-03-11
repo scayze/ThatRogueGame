@@ -105,9 +105,10 @@ func place_chests():
 		if ok: chest_available.append(a)
 		
 	print(chest_available.size())
-	for i in range(3):
+	for i in range(4):
 		var r = rand_range(0,chest_available.size())
 		var chest = scene_chest.instance()
+		if i==0 and get_parent().player.poems_collected < get_parent().ui.poem_screen.poems.size(): chest.spawn_poem = true
 		add_child(chest)
 		get_parent().spawn_entity(chest,chest_available[r])
 
@@ -129,11 +130,11 @@ func plant_trees():
 func spawn_fucks():
 	var possible_fucks = []
 	if get_parent().current_level >= 0: possible_fucks.append(scene_slime)
-	if get_parent().current_level >= 0: possible_fucks.append(scene_snake)
+	if get_parent().current_level >= 2: possible_fucks.append(scene_snake)
 	if get_parent().current_level >= 0: possible_fucks.append(scene_zombie)
-	if get_parent().current_level >= 0: possible_fucks.append(scene_golem)
-	if get_parent().current_level >= 0: possible_fucks.append(scene_skeleton)
-	if get_parent().current_level >= 0: possible_fucks.append(scene_cube)
+	if get_parent().current_level >= 3: possible_fucks.append(scene_golem)
+	if get_parent().current_level >= 1: possible_fucks.append(scene_skeleton)
+	if get_parent().current_level >= 4: possible_fucks.append(scene_cube)
 	
 	var fucks = []
 	for i in range(10+get_parent().current_level*2):

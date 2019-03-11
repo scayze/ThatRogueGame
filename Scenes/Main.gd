@@ -1,6 +1,7 @@
 extends Node
 
 var scene_player = preload("res://Scenes/Entities/Player.tscn")
+var audio_player = preload("res://Scenes/AudioStreamPlayer.tscn")
 onready var player= null
 onready var tilemap = get_node("TileMap")
 onready var flora = get_node("Flora")
@@ -24,12 +25,21 @@ var game_paused = false
 
 onready var ui = get_node("Viewport/UI")
 
-
 func _ready():
 	ui.main = self
 	ui.set_state(ui.state.MENU)
 	astar = AStar.new()
+	for x in range(0,map_width):
+		drops.append([])
+		drops[x].resize(map_height)
 	pass
+
+func play_sound(a,v = 0):
+	var audio = audio_player.instance()
+	add_child(audio)
+	audio.stream = a
+	audio.volume_db += v
+	audio.play()
 
 func start_game():
 	if player: player.queue_free()
@@ -39,7 +49,9 @@ func start_game():
 	player.init(astar,player,self)
 	ui.init(player)
 	score = 0
+	current_level = 0
 	ui.update_score(score)
+	ui.label_expl.visible = true
 	next_stage()
 
 func add_score(p):
@@ -54,16 +66,14 @@ func game_finished():
 
 func finished_stage():
 	current_level += 1
+	ui.label_expl.visible = false
 	next_stage()
 
 func next_stage():
+	player.recover_energy(1337)
 	init_map()
 
 func clear_everything():
-	pass
-
-func init_map():
-	#Clear the astar navigation
 	astar.clear()
 	#Clear all entity references from last stage
 	entities.clear()
@@ -71,7 +81,6 @@ func init_map():
 	game_paused = false
 	#Clear map, terrain, drops etc
 	map.clear()
-	drops.clear()
 	tilemap.clear()
 	flora.clear()
 	#Recreate the map array
@@ -80,8 +89,14 @@ func init_map():
 		map[x].resize(map_height)
 	#Recreate the drop array
 	for x in range(0,map_width):
-		drops.append([])
-		drops[x].resize(map_height)
+		for y in range(0,map_height):
+			if drops[x][y]:
+				drops[x][y].queue_free()
+				drops[x][y] = null
+
+func init_map():
+	#Clear the astar navigation
+	clear_everything()
 	
 	worldgen.generate_level(current_level)
 	
@@ -121,6 +136,7 @@ func move_entity(entity, dir):
 	var new_pos = id_to_pos(new_id)
 	if astar.are_points_connected(entity.id,new_id):
 		if map[new_pos.x][new_pos.y] == null:
+			if entity == player: play_sound(player.sound_step)
 			var pos = id_to_pos(entity.id)
 			map[pos.x][pos.y] = null
 			map[pos.x + dir.x][pos.y + dir.y] = entity

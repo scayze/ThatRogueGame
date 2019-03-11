@@ -15,14 +15,14 @@ func on_init():
 
 func on_death():
 	main.remove_entity(self)
-	main.add_score(20)
+	main.add_score(25)
 
 func on_health_empty():
 	queue_free()
 
 func on_attack(e):
 	if e.type == Type.PLAYER:
-		e.deal_damage(4)
+		e.deal_damage(2)
 
 func on_turn():
 	if can_move == false:

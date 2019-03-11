@@ -15,6 +15,7 @@ onready var state_highscores = get_node("Highscores")
 onready var state_credits = get_node("Credits")
 
 onready var label_score = get_node("Game/Score")
+onready var label_expl = get_node("Game/RestExlp")
 onready var fade_over = get_node("Game/FadeOver")
 onready var poem_screen = get_node("Game/PoemScreen")
 
@@ -80,8 +81,10 @@ func set_state(s):
 		state_highscores.visible = true
 		state_credits.visible = false
 		var control_container = get_node("Highscores/VBoxContainer")
+		for c in control_container.get_children():
+			c.queue_free()
 		var highscores = HighScores.get_scores()
-		
+		if highscores == null: return
 		for i in range(clamp(highscores.size(),0,10)):
 			var d = score_line.instance()
 			control_container.add_child(d)
@@ -150,4 +153,5 @@ func _on_Exit_pressed():
 
 
 func _on_Back_pressed():
+	main.clear_everything()
 	set_state(state.MENU)

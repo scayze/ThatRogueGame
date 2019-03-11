@@ -16,6 +16,12 @@ onready var label_energy = get_node("Energy")
 
 var scene_sword = preload("res://Scenes/Drops/CopperSword.tscn")
 
+var texture_copper = preload("res://Characters/Main Character/character_cooper.png")
+var texture_iron = preload("res://Characters/Main Character/character_iron.png")
+var texture_master = preload("res://Characters/Main Character/character_gold.png")
+
+export(String, FILE) var sound_step = ""
+
 func recover_energy(a):
 	if a < 0 && main.goal.active: return
 	energy += a
@@ -26,6 +32,9 @@ func equip_weapon(d):
 		weapon.queue_free()
 	weapon = d
 	main.ui.set_weapon(weapon)
+	if weapon.type == "copper_sword": texture = texture_copper
+	if weapon.type == "iron_sword": texture = texture_iron
+	if weapon.type == "master_sword": texture = texture_master
 
 func _process(delta):
 	label_energy.text = str(energy)
@@ -43,6 +52,8 @@ func _ready():
 	invs.append(inv1)
 	invs.append(inv2)
 	invs.append(inv3)
+	
+	sound_step = load(sound_step)
 
 func on_init():
 	inv1 = null
@@ -63,10 +74,13 @@ func on_turn():
 	if stunned < 0: stunned = 0
 
 func on_attack(e):
-	e.deal_damage(weapon.damage)
+	if energy > 8:
+		recover_energy(-8)
+		e.deal_damage(weapon.damage)
+	else: recover_energy(7)
 
 func on_damage(d):
-	recover_energy(-8)
+	#recover_energy(-8)
 	#get_node("Sprite").visible = true
 	#get_node("Sprite").frame = 0
 	#get_node("Sprite").play("New Anim")
@@ -85,6 +99,7 @@ func move(vec):
 			return
 		recover_energy(-2)
 		main.move_entity(self,vec)
+		#main.play_sound(sound_step,10)
 		timer_inactivity = 0
 	main.enemy_turn()
 	pass
@@ -134,6 +149,7 @@ func collect():
 
 func rest():
 	recover_energy(5)
+	timer_inactivity = 0
 	main.enemy_turn()
 
 func _input(event):

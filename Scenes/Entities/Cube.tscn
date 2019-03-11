@@ -24,8 +24,12 @@ tracks/0/keys = {
 texture = ExtResource( 1 )
 offset = Vector2( 0, -2 )
 region_enabled = true
-region_rect = Rect2( 98, 0, 14, 13 )
+region_rect = Rect2( 70, 0, 14, 13 )
 script = ExtResource( 2 )
+max_hp = 3
+healthbar_offset = 17
+type = 2
+damage_sound = "res://Audio/cube_daño_3.ogg"
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/Idle = SubResource( 1 )

@@ -16,7 +16,7 @@ func on_health_empty():
 
 func on_attack(e):
 	if e.type == Type.PLAYER:
-		e.deal_damage(1 + 0.5 * main.current_level)
+		e.deal_damage(2 + 0.5 * main.current_level)
 
 func on_turn():
 	var path = astar.get_point_path(id,player.id)

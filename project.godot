@@ -26,7 +26,7 @@ _global_script_class_icons={
 
 [application]
 
-config/name="RogueRogue"
+config/name="Rogue Island"
 run/main_scene="res://Scenes/Main.tscn"
 boot_splash/bg_color=Color( 0.337255, 0.596078, 0.776471, 1 )
 config/icon="res://icon.png"
@@ -34,6 +34,10 @@ config/icon="res://icon.png"
 [autoload]
 
 HighScores="*res://Autoloads/HighScores.gd"
+
+[global]
+
+scores="[]"
 
 [input]
 

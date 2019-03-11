@@ -30,6 +30,7 @@ export var visible_health = true
 export var healthbar_offset = 0
 export var crit_chance = 0.2
 export var crit_multiplier = 2.0
+export var item_drop_chance = 0.2
 
 var stunned = 0
 
@@ -39,15 +40,29 @@ var anim_blink = preload("res://Animations/Blink.tres")
 var anim_blink_crit = preload("res://Animations/BlinkCrit.tres")
 onready var blink_player = AnimationPlayer.new()
 
+
+var scene_cherry = preload("res://Scenes/Drops/Cherry.tscn")
+var scene_apple = preload("res://Scenes/Drops/Apple.tscn")
+var scene_red_potion = preload("res://Scenes/Drops/RedPotion.tscn")
+var scene_blue_potion = preload("res://Scenes/Drops/BluePotion.tscn")
+
+var drop_pool_array = []
+
+export(String, FILE) var damage_sound = ""
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	add_child(blink_player)
 	blink_player.add_animation("Blink",anim_blink)
 	blink_player.add_animation("BlinkCrit",anim_blink_crit)
+	drop_pool_array.append(scene_cherry)
+	drop_pool_array.append(scene_apple)
+	drop_pool_array.append(scene_red_potion)
+	drop_pool_array.append(scene_blue_potion)
 	pass # Replace with function body.
 
 func _process(delta):
-	if blink_player.is_playing(): return
+	#if blink_player.is_playing(): return
 	#Fade to correct position, looks waaaaaay better
 	var goal_position = pos * 16 + Vector2(8,8)
 	position += (goal_position - position) * clamp(delta * 50,0,1)
@@ -56,6 +71,9 @@ func init(nav,hero,m):
 	astar = nav
 	player = hero
 	main = m
+	
+	if damage_sound == "": damage_sound = null
+	else: damage_sound = load(damage_sound)
 	
 	hp = max_hp + 0.25 * main.current_level
 	position = pos * 16 + Vector2(8,8)
@@ -112,12 +130,20 @@ func deal_damage(d):
 			else: blink_player.play("Blink")
 			healthbar.visible = true
 	if hp <= 0: die()
+	if damage_sound: main.play_sound(damage_sound)
 
 func die():
 	if has_method("on_death"): call("on_death")
 	else: 
 		main.remove_entity(self)
 		queue_free()
+	if type == Type.ENEMY:
+		var chance = rand_range(0,1)
+		if chance <= item_drop_chance:
+			var r = rand_range(0,drop_pool_array.size())
+			var drop = drop_pool_array[r].instance()
+			main.add_child(drop)
+			main.spawn_drop(drop,pos)
 
 func update():
 	pos = id_to_pos(id)

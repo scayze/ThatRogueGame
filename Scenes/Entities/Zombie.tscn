@@ -24,10 +24,10 @@ offset = Vector2( -2, -4 )
 region_enabled = true
 region_rect = Rect2( 45, 0, 15, 26 )
 script = ExtResource( 2 )
-max_hp = 3
+max_hp = 2
 healthbar_offset = 18
-crit_chance = 1.0
 type = 2
+damage_sound = "res://Audio/zombi_daño.ogg"
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/Idle = SubResource( 1 )
